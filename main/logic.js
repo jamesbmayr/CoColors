@@ -66,13 +66,13 @@
 
 					case "meta":
 						return '<meta charset="UTF-8"/>\
-								<meta name="description" content="CoCanvas is a real-time collaborative drawing app."/>\
+								<meta name="description" content="CoCrayon is a real-time collaborative drawing app."/>\
 								<meta name="keywords" content="drawing,draw,art,collaborative,real-time,colors,fun,together"/>\
 								<meta name="author" content="James Mayr"/>\
-								<meta property="og:title" content="CoCanvas: a real-time collaborative drawing app"/>\
-								<meta property="og:url" content="http://www.cocanvas.com"/>\
-								<meta property="og:description" content="CoCanvas is a real-time collaborative drawing app."/>\
-								<meta property="og:image" content="http://www.cocanvas.com/banner.png"/>\
+								<meta property="og:title" content="CoCrayon: a real-time collaborative drawing app"/>\
+								<meta property="og:url" content="http://www.cocrayon.herokuapp.com"/>\
+								<meta property="og:description" content="CoCrayon is a real-time collaborative drawing app."/>\
+								<meta property="og:image" content="http://www.cocrayon.herokuapp.com/banner.png"/>\
 								<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>'
 					break
 

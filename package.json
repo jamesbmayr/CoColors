@@ -1,5 +1,5 @@
 {
-  "name": "cocanvas",
+  "name": "cocrayon",
   "version": "1.0.0",
   "description": "draw together using canvas and websockets",
   "main": "index.js",

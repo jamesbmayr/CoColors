@@ -32,12 +32,14 @@
 					var environment = {
 						port:   process.env.PORT,
 						domain: process.env.DOMAIN,
+						origin: process.env.ORIGIN
 					}
 				}
 				else {
 					var environment = {
 						port:   3000,
 						domain: "localhost",
+						origin: "http://localhost:3000"
 					}
 				}
 
@@ -141,28 +143,38 @@
 /*** tools ***/		
 	/* renderHTML */
 		module.exports.renderHTML = renderHTML
-		function renderHTML(request, file) {
+		function renderHTML(request, path, callback) {
 			try {
 				var html = {}
-					html.original = fs.readFileSync(file).toString()
-					html.array = html.original.split(/<script\snode>|<\/script>node>/gi)
-
-				for (html.count = 1; html.count < html.array.length; html.count += 2) {
-					try {
-						html.temp = eval(html.array[html.count])
+				fs.readFile(path, "utf8", function (error, file) {
+					if (error) {
+						logError(error)
+						callback("")
 					}
-					catch (error) {
-						html.temp = ""
-						logError("<sn>" + Math.ceil(html.count / 2) + "</sn>\n" + error)
-					}
-					html.array[html.count] = html.temp
-				}
+					else {
+						console.log("working")
+						html.original = file
+						console.log(html.original)
+						html.array = html.original.split(/<script\snode>|<\/script>node>/gi)
 
-				return html.array.join("")
+						for (html.count = 1; html.count < html.array.length; html.count += 2) {
+							try {
+								html.temp = eval(html.array[html.count])
+							}
+							catch (error) {
+								html.temp = ""
+								logError("<sn>" + Math.ceil(html.count / 2) + "</sn>\n" + error)
+							}
+							html.array[html.count] = html.temp
+						}
+
+						callback(html.array.join(""))
+					}
+				})
 			}
 			catch (error) {
 				logError(error)
-				return ""
+				callback("")
 			}
 		}
 

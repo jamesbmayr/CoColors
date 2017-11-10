@@ -32,14 +32,12 @@
 					var environment = {
 						port:   process.env.PORT,
 						domain: process.env.DOMAIN,
-						origin: process.env.ORIGIN
 					}
 				}
 				else {
 					var environment = {
 						port:   3000,
 						domain: "localhost",
-						origin: "http://localhost:3000"
 					}
 				}
 

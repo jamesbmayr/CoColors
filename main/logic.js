@@ -152,9 +152,7 @@
 						callback("")
 					}
 					else {
-						console.log("working")
 						html.original = file
-						console.log(html.original)
 						html.array = html.original.split(/<script\snode>|<\/script>node>/gi)
 
 						for (html.count = 1; html.count < html.array.length; html.count += 2) {

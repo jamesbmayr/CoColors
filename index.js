@@ -253,7 +253,7 @@
 /*** handleSocket ***/
 	function handleSocket(request) {
 		// collect data
-			if (request.origin !== main.getEnvironment("origin")) {
+			if (request.origin.replace("https://","").replace("http://","") !== main.getEnvironment("domain")) {
 				request.reject()
 				main.logStatus("[REJECTED]: " + request.origin + " @ " + (request.socket._peername.address || "?"))
 			}

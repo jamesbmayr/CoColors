@@ -246,7 +246,9 @@
 					"Set-Cookie": String( "session=" + id + "; expires=" + (new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7)).toUTCString()) + "; path=/; domain=" + main.getEnvironment("domain") ),
 					"Content-Type": "text/html; charset=utf-8"
 				})
-				response.end(data || main.renderHTML(request, "./main/_404.html"))
+				main.renderHTML(request, "./main/_404.html", function (html) {
+					response.end(html)
+				})
 			}
 	}
 

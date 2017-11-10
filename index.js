@@ -4,7 +4,6 @@
 	var qs   = require("querystring")
 	var ws   = require("websocket").server
 	var main = require("./main/logic")
-	var draw = require("./draw/logic")
 
 /*** server ***/
 	var port = main.getEnvironment("port")
@@ -32,7 +31,7 @@
 		try {
 			var keys = Object.keys(canvases)
 			for (var i = keys.length - 1; i >= 0; i--) {
-				if (!canvases[keys[i]].clients.length) {
+				if (!Object.keys(canvases[keys[i]].clients).length) {
 					delete canvases[keys[i]]
 				}
 			}
@@ -94,7 +93,14 @@
 									case (/\/apple\-touch\-icon\-precomposed[.]png$/).test(request.url):
 										try {
 											response.writeHead(200, {"Content-Type": "image/png"})
-											response.end(fs.readFileSync("./main/logo.png"), "binary")
+											fs.readFile("./main/logo.png", function (error, file) {
+												if (error) {
+													_404(error)
+												}
+												else {
+													response.end(file, "binary")
+												}
+											})
 										}
 										catch (error) {_404(error)}
 									break
@@ -103,7 +109,15 @@
 									case (/\/banner[.]png$/).test(request.url):
 										try {
 											response.writeHead(200, {"Content-Type": "image/png"})
-											response.end(fs.readFileSync("./main/banner.png"), "binary")
+											//response.end(fs.readFileSync("./main/banner.png"), "binary")
+											fs.readFile("./main/banner.png", function (error, file) {
+												if (error) {
+													_404(error)
+												}
+												else {
+													response.end(file, "binary")
+												}
+											})
 										}
 										catch (error) {_404(error)}
 									break
@@ -112,7 +126,14 @@
 									case (/\/stylesheet[.]css$/).test(request.url):
 										try {
 											response.writeHead(200, {"Content-Type": "text/css"})
-											response.end(fs.readFileSync("./" + request.path[1] + "/stylesheet.css") || "")
+											fs.readFile("./" + request.path[1] + "/stylesheet.css", "utf8", function (error, file) {
+												if (error) {
+													_404(error)
+												}
+												else {
+													response.end(file)
+												}
+											})
 										}
 										catch (error) {_404(error)}
 									break
@@ -121,7 +142,14 @@
 									case (/\/script[.]js$/).test(request.url):
 										try {
 											response.writeHead(200, {"Content-Type": "text/javascript"})
-											response.end( "window.onload = function() { \n" + (fs.readFileSync("./" + request.path[1] + "/script.js") || "") + "\n}" )
+											fs.readFile("./" + request.path[1] + "/script.js", "utf8", function (error, file) {
+												if (error) {
+													_404(error)
+												}
+												else {
+													response.end("window.onload = function() { \n" + file + "\n}")
+												}
+											})
 										}
 										catch (error) {_404(error)}
 									break
@@ -150,19 +178,23 @@
 										catch (error) {_404(error)}
 									break
 
-								// draw
-									case (/^\/draw\/[a-zA-Z0-9]{8}$/).test(request.url):
-										try {
-											response.end(main.renderHTML(request, "./draw/index.html"))
-										}
-										catch (error) {_404(error)}
-									break
-
 								// about
 									case (/^\/about\/?$/).test(request.url):
 										try {
 											request.canvases = canvases
-											response.end(main.renderHTML(request, "./about/index.html"))
+											main.renderHTML(request, "./about/index.html", function (html) {
+												response.end(html)
+											})
+										}
+										catch (error) {_404(error)}
+									break
+
+								// draw
+									case (/^\/draw\/[a-zA-Z0-9]{8}$/).test(request.url):
+										try {
+											main.renderHTML(request, "./draw/index.html", function (html) {
+												response.end(html)
+											})
 										}
 										catch (error) {_404(error)}
 									break
@@ -221,7 +253,7 @@
 /*** handleSocket ***/
 	function handleSocket(request) {
 		// collect data
-			if (["http://localhost:3000"].indexOf(request.origin) == -1) {
+			if (request.origin !== main.getEnvironment("origin")) {
 				request.reject()
 				main.logStatus("[REJECTED]: " + request.origin + " @ " + (request.socket._peername.address || "?"))
 			}
@@ -287,7 +319,11 @@
 					request.connection.on("message", function (message) {
 						try {
 							var data = JSON.parse(message.utf8Data) || null
-							if (data) {
+							if (data && data.erase) {
+								delete data.erase
+								canvas.paths = {}
+							}
+							else if (data) {
 								canvas.updated = new Date().getTime()
 								canvas.paths = data
 							}

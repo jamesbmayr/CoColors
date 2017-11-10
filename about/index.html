@@ -4,30 +4,76 @@
 		<title>CoCanvas</title>
 		<link rel="shortcut icon" type="image/png" href="logo.png"/>
 		<script node>getAsset("font awesome")</script>node>
-		<!-- <link rel="stylesheet" type="text/css" href="about/stylesheet.css"/> -->
-		<!-- <script type="text/javascript" src="about/script.js"></script> -->
+		<link rel="stylesheet" type="text/css" href="about/stylesheet.css"/>
+		<script type="text/javascript" src="about/script.js"></script>
 		<script node>getAsset("meta")</script>node>
 	</head>
 	<body>
-		<div id="details">
-			<pre><script node>
-				var data = []
-				var canvases = Object.keys(request.canvases)
+		<div id="title">
+			<div id="logotype"></div>
+		</div>
+		<div id="about">
+			<div class="header">What is this?</div>
+			<div class="details">
+				CoCanvas is a real-time collaborative drawing tool. People across the web can instantly create a canvas and fill it with color - together!
+			</div>
+			<div class="header">How do I use it?</div>
+			<div class="details">
+				Every canvas has a unique 8-character id. Just go to the <a href="./" target="_blank">homepage</a> to make a new one - or, if your friend already made one, just get the link!
+				<br><br>
+				Once inside, just hold down the mouse and move around to draw. You can change the pencil's color and thickness using the tools across the top.
+				<br><br>
+				Every continuous path you draw is stored separately - that means you can use the erase tool to wipe out entire paths, rather than individual pixels.
+				<br><br>
+				Or, start from scratch - use the reset tool on the right to wipe the slate clean!
+			</div>
+			<div class="header">How does it work?</div>
+			<div class="details">
+				CoCanvas uses the HTML <code>&lt;canvas&gt;</code> element to display everything you draw, and tracks your mouse movement to add paths into that canvas.
+				<br><br>
+				The app is powered by nodeJS and the <a href="https://www.npmjs.com/package/websocket" target="_blank">websockets</a> package, which communicates between your browser and the app's server in real-time using <code>new WebSocket</code>. 
+			</div>
+			<div class="header">Can I see the code?</div>
+			<div class="details">
+				Yes! Head over to <a href="https://www.github.com/jamesbmayr/cocanvas" target="_blank">GitHub</a> to check it out!
+			</div>
+		</div>
+		<div id="live">
+			<div class="header">Current Canvases</div>
+			<div class="details">
+				<script node>
+					var data = []
+					var canvases = Object.keys(request.canvases)
 
-				for (var i = canvases.length - 1; i >= 0; i--) {
-					var canvas = request.canvases[canvases[i]]
+					for (var i = canvases.length - 1; i >= 0; i--) {
+						var canvas  = request.canvases[canvases[i]]
+						var clients = []
+							Object.keys(canvas.clients).forEach(function (c) {
+								clients.push("<li class='listitem'>" + c + "</li>")
+							})
+						var paths = []
+							Object.keys(canvas.paths).forEach(function (p) {
+								paths.push("<li class='listitem'>" + p + "</li>")
+							})
 
-					data.unshift({
-						id:      canvas.id,
-						created: canvas.created,
-						updated: canvas.updated,
-						clients: Object.keys(canvas.clients),
-						paths:   Object.keys(canvas.paths)
-					})
-				}
+						data.unshift("<div class='canvas'>"
+							+ "<a class='link' href='./draw/" + canvas.id + "' target='_blank'>" + canvas.id + "</a>"
+							+ "<div class='label'>updated: </div>"
+							+ "<ul class='timestamp'><li>" + new Date(canvas.updated).toLocaleString() + "</li></ul>"
+							+ "<div class='label'>artists: </div>"
+							+ "<ul class='clients'>"
+							+ clients.join("")
+							+ "</ul>"
+							+ "<div class='label'>paths: </div>"
+							+ "<ul class='paths'>"
+							+ paths.join("")
+							+ "</ul>"
+						+ "</div>")
+					}
 
-				JSON.stringify(data, null, 2)
-			</script>node></pre>
+					data.length ? data.join("") : "<div class='empty'>no current canvases</div>"
+				</script>node>
+			</div>
 		</div>
 	</body>
 </html>

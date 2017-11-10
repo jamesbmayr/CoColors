@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CoCanvas</title>
+		<link rel="shortcut icon" type="image/png" href="logo.png"/>
+		<script node>getAsset("font awesome")</script>node>
+		<!-- <link rel="stylesheet" type="text/css" href="about/stylesheet.css"/> -->
+		<!-- <script type="text/javascript" src="about/script.js"></script> -->
+		<script node>getAsset("meta")</script>node>
+	</head>
+	<body>
+		<div id="details">
+			<pre><script node>
+				var data = []
+				var canvases = Object.keys(request.canvases)
+
+				for (var i = canvases.length - 1; i >= 0; i--) {
+					var canvas = request.canvases[canvases[i]]
+
+					data.unshift({
+						id:      canvas.id,
+						created: canvas.created,
+						updated: canvas.updated,
+						clients: Object.keys(canvas.clients),
+						paths:   Object.keys(canvas.paths)
+					})
+				}
+
+				JSON.stringify(data, null, 2)
+			</script>node></pre>
+		</div>
+	</body>
+</html>

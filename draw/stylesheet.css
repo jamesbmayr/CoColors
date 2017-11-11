@@ -33,6 +33,10 @@
 	}
 
 	@media screen and (max-width: 800px) {
+		body {
+			height: calc(100vh - 60px);
+		}
+
 		#canvas {
 			height: calc(100vh - 110px)
 		}

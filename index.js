@@ -255,7 +255,7 @@
 /*** handleSocket ***/
 	function handleSocket(request) {
 		// collect data
-			if (request.origin.replace("https://","").replace("http://","") !== main.getEnvironment("domain")) {
+			if ((request.origin.replace("https://","").replace("http://","") !== main.getEnvironment("domain")) && (request.origin !== "http://" + main.getEnvironment("domain") + ":" + main.getEnvironment("port"))) {
 				request.reject()
 				main.logStatus("[REJECTED]: " + request.origin + " @ " + (request.socket._peername.address || "?"))
 			}
@@ -321,13 +321,20 @@
 					request.connection.on("message", function (message) {
 						try {
 							var data = JSON.parse(message.utf8Data) || null
-							if (data && data.erase) {
-								delete data.erase
+							if (data && data.erase) { // clearing
 								canvas.paths = {}
 							}
 							else if (data) {
+								var keys = Object.keys(data)
+								for (var k in keys) {
+									if (data[keys[k]].erase) { // erasing
+										delete canvas.paths[keys[k]]
+									}
+									else if (canvas.paths[keys[k]] == undefined || canvas.paths[keys[k]].coordinates.length < data[keys[k]].coordinates.length) { // drawing
+										canvas.paths[keys[k]] = data[keys[k]]
+									}
+								}
 								canvas.updated = new Date().getTime()
-								canvas.paths = data
 							}
 
 							for (var i = Object.keys(canvas.clients).length - 1; i >= 0; i--) {

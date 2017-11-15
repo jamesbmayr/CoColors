@@ -7,6 +7,7 @@
 		var size = 5
 		var paths = {}
 		window.paths = paths
+		var socket = null
 
 /*** tools ***/
 	/*** generateRandom ***/
@@ -97,12 +98,16 @@
 				else {
 					var ids = Object.keys(paths)
 					for (var i = ids.length - 1; i >= 0; i--) {
-						if (paths[ids[i]].coordinates.findIndex(function (coordinates) {
+						if (!paths[ids[i]].erase && paths[ids[i]].coordinates.findIndex(function (coordinates) {
 							return (coordinates[0] < x + 5) && (coordinates[0] > x - 5) && (coordinates[1] < y + 5) && (coordinates[1] > y - 5)
 						}) !== -1) {
-							delete paths[ids[i]]
+							paths[ids[i]] = {erase: true}
 						}
 					}
+				}
+
+				if (socket) {
+					socket.send(JSON.stringify(paths))
 				}
 			}
 		}
@@ -129,9 +134,9 @@
 						var coordinates = path.coordinates[c]
 						context.lineTo(coordinates[0], coordinates[1])
 					}
-				}
 
-				context.stroke()
+					context.stroke()
+				}
 			}
 		}
 
@@ -184,13 +189,14 @@
 		}
 
 /*** socket ***/
-	var socket = new WebSocket(location.href.replace("http","ws"))
-	socket.onopen = function() {
-		var sendLoop = setInterval(sendData, 100)
+	socket = new WebSocket(location.href.replace("http","ws"))
+	socket.onclose = function() {
+		socket = null
+		console.log("websocket closed")
+	}
 
-		function sendData() {
-			socket.send(JSON.stringify(paths))
-		}
+	socket.onopen = function() {
+		socket.send(null)
 
 		socket.onmessage = function(message) {
 			try {

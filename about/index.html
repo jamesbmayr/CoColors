@@ -47,26 +47,18 @@
 
 					for (var i = canvases.length - 1; i >= 0; i--) {
 						var canvas  = request.canvases[canvases[i]]
-						var clients = []
-							Object.keys(canvas.clients).forEach(function (c) {
-								clients.push("<li class='listitem'>" + c + "</li>")
-							})
-						var paths = []
-							Object.keys(canvas.paths).forEach(function (p) {
-								paths.push("<li class='listitem'>" + p + "</li>")
-							})
-
+	
 						data.unshift("<div class='canvas'>"
 							+ "<a class='link' href='./draw/" + canvas.id + "' target='_blank'>" + canvas.id + "</a>"
 							+ "<div class='label'>updated: </div>"
 							+ "<ul class='timestamp'><li>" + new Date(canvas.updated).toLocaleString() + "</li></ul>"
 							+ "<div class='label'>artists: </div>"
 							+ "<ul class='clients'>"
-							+ clients.join("")
+							+ "<li>" + Object.keys(canvas.clients).length + "</li>"
 							+ "</ul>"
 							+ "<div class='label'>paths: </div>"
 							+ "<ul class='paths'>"
-							+ paths.join("")
+							+ "<li>" + Object.keys(canvas.paths).length + "</li>"
 							+ "</ul>"
 						+ "</div>")
 					}

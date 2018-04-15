@@ -172,8 +172,8 @@
 								// home
 									case (/^\/$/).test(request.url):
 										try {
-											var id = main.generateRandom(null, 8).toLowerCase()
-											_302("../../draw/" + main.generateRandom(null, 8).toLowerCase())
+											var id = main.generateRandom("abcdefghijklmnopqrstuvwxyz", 4).toLowerCase()
+											_302("../../draw/" + id)
 										}
 										catch (error) {_404(error)}
 									break
@@ -190,7 +190,7 @@
 									break
 
 								// draw
-									case (/^\/draw\/[a-zA-Z0-9]{8}$/).test(request.url):
+									case (/^\/draw\/[a-zA-Z]{4}$/).test(request.url):
 										try {
 											main.renderHTML(request, "./draw/index.html", function (html) {
 												response.end(html)

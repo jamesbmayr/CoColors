@@ -109,8 +109,23 @@
 									case (/\/banner[.]png$/).test(request.url):
 										try {
 											response.writeHead(200, {"Content-Type": "image/png"})
-											//response.end(fs.readFileSync("./main/banner.png"), "binary")
 											fs.readFile("./main/banner.png", function (error, file) {
+												if (error) {
+													_404(error)
+												}
+												else {
+													response.end(file, "binary")
+												}
+											})
+										}
+										catch (error) {_404(error)}
+									break
+
+								// j-logo
+									case (/\/j[.]png$/).test(request.url):
+										try {
+											response.writeHead(200, {"Content-Type": "image/png"})
+											fs.readFile("./main/j.png", function (error, file) {
 												if (error) {
 													_404(error)
 												}

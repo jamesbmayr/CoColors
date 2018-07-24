@@ -114,7 +114,7 @@
 		margin-right: 0px;
 	}
 
-	#controls a {
+	#controls a#logotype {
 		margin-right: 25px;
 		background-color: #dddddd;
 		color: #333333;
@@ -202,4 +202,26 @@
 
 	#controls button#_20 {
 		font-size: 24px;
+	}
+
+/* j-logo */
+	#controls a#j-logo {
+		float: right;
+		margin: 0px;
+		background-color: transparent;
+		background-image: url("j.png");
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center center;
+		height: 30px;
+		width: 30px;
+		cursor: pointer;
+		z-index: 1000;
+		outline: none;
+		filter: drop-shadow(0px 0px 2px #222222);
+		box-shadow: none;
+	}
+
+	#controls a#j-logo:hover, #controls a#j-logo:focus {
+		filter: drop-shadow(0px 0px 4px #aaaaaa);
 	}

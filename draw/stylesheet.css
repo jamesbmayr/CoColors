@@ -1,8 +1,17 @@
 /* page */
+	html {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
 	body {
-		width: 100vw;
-		height: 100vh;
-		position: absolute;
+		width: 100%;
+		height: 100%;
+		position: fixed;
 		top: 0px;
 		left: 0px;
 		padding: 0px;
@@ -13,9 +22,9 @@
 
 /* canvas */
 	#canvas {
-		width: 100vw;
-		height: calc(100vh - 50px);
-		position: absolute;
+		width: 100%;
+		height: calc(100% - 50px);
+		position: fixed;
 		top: 50px;
 		left: 0px;
 		padding: 0px;
@@ -32,33 +41,34 @@
 		cursor: not-allowed;
 	}
 
-	@media screen and (max-width: 800px) {
-		body {
-			height: calc(100vh - 60px);
-		}
-
-		#canvas {
-			height: calc(100vh - 110px)
-		}
-	}
-
 /* controls */
-	#controls-outer {
-		position: absolute;
+	#navbar {
+		position: fixed;
 		top: 0px;
 		left: 0px;
 		width: 100vw;
 		height: 50px;
+		overflow: hidden;
+		background-color: #333333;
+	}
+
+	#controls-outer {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		width: calc(100vw - 36px);
+		border-radius: 10px;
+		height: 50px;
 		overflow-x: auto;
 		overflow-y: hidden;
+		box-shadow: 0px 0px 10px #111111 inset;
 	}
 
 	#controls {
 		position: absolute;
-		background-color: #333333;
 		height: 30px;
-		min-width: calc(100vw - 20px);
-		width: calc(480px + 180px + 80px + 80px);
+		min-width: calc(100vw - 60px);
+		width: calc(470px + 175px + 70px + 105px);
 		padding: 10px;
 		box-shadow: 0px 0px 10px #111111 inset;
 	}
@@ -205,8 +215,10 @@
 	}
 
 /* j-logo */
-	#controls a#j-logo {
-		float: right;
+	#j-logo {
+		position: absolute;
+		top: 9px;
+		right: 3px;
 		margin: 0px;
 		background-color: transparent;
 		background-image: url("j.png");
@@ -222,6 +234,6 @@
 		box-shadow: none;
 	}
 
-	#controls a#j-logo:hover, #controls a#j-logo:focus {
+	#j-logo:hover, #j-logo:focus {
 		filter: drop-shadow(0px 0px 4px #aaaaaa);
 	}

@@ -8,6 +8,7 @@
 		var paths = {}
 		window.paths = paths
 		var socket = null
+		var pingInterval = 1000 * 60
 
 	/* triggers */
 		if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent)) {
@@ -202,6 +203,15 @@
 
 	socket.onopen = function() {
 		socket.send(null)
+
+		if (socket.pingLoop) {
+			clearInterval(socket.pingLoop)
+		}
+		socket.pingLoop = setInterval(function() {
+			fetch("/ping", {method: "GET"})
+				.then(function(response){ return response.json() })
+				.then(function(data) {})
+		}, pingInterval)
 
 		socket.onmessage = function(message) {
 			try {

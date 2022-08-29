@@ -68,9 +68,9 @@
 								<meta name="keywords" content="drawing,draw,art,collaborative,real-time,colors,fun,together"/>\
 								<meta name="author" content="James Mayr"/>\
 								<meta property="og:title" content="CoColors: a real-time collaborative drawing app"/>\
-								<meta property="og:url" content="https://cocolors.herokuapp.com"/>\
+								<meta property="og:url" content="https://cocolors.onrender.com"/>\
 								<meta property="og:description" content="CoColors is a real-time collaborative drawing app."/>\
-								<meta property="og:image" content="https://cocolors.herokuapp.com/banner.png"/>\
+								<meta property="og:image" content="https://cocolors.onrender.com/banner.png"/>\
 								<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>'
 					break
 
